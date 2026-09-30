@@ -1,0 +1,252 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    background: linear-gradient(180deg, #edf7ee 0%, #f7f3ea 30%, #eef4f7 100%);
+    background-attachment: fixed;
+  }
+
+  input:not([type="checkbox"]),
+  textarea,
+  select {
+    @apply w-full rounded-xl border border-sand bg-white px-3 py-2 text-sm outline-none ring-leaf/30 focus:ring-2;
+  }
+
+  label {
+    @apply mb-1 block text-sm font-medium;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-leaf text-white hover:bg-[#164f68];
+  }
+
+  .btn-ghost {
+    @apply btn border border-sand bg-white hover:bg-sand/60;
+  }
+
+  .btn-danger {
+    @apply btn bg-clay text-white hover:bg-[#b45632];
+  }
+
+  .panel {
+    @apply rounded-3xl border border-sand/80 bg-card shadow-card;
+  }
+}
+
+.bg-paper {
+  background-color: #eef3f7;
+}
+
+.bg-paper\/90 {
+  background-color: rgb(238 243 247 / 0.9);
+}
+
+.bg-paper\/95 {
+  background-color: rgb(238 243 247 / 0.95);
+}
+
+.text-ink {
+  color: #152033;
+}
+
+.text-ink\/80 {
+  color: rgb(21 32 51 / 0.8);
+}
+
+.text-ink\/70 {
+  color: rgb(21 32 51 / 0.7);
+}
+
+.text-ink\/60 {
+  color: rgb(21 32 51 / 0.6);
+}
+
+.text-ink\/50 {
+  color: rgb(21 32 51 / 0.5);
+}
+
+.bg-leaf,
+.btn-primary {
+  background-color: #1d6a8a;
+}
+
+.btn-primary:hover {
+  background-color: #164f68;
+}
+
+.text-leaf {
+  color: #1d6a8a;
+}
+
+.text-leaf\/70 {
+  color: rgb(29 106 138 / 0.7);
+}
+
+.border-leaf\/20 {
+  border-color: rgb(29 106 138 / 0.2);
+}
+
+.ring-leaf\/30 {
+  --tw-ring-color: rgb(29 106 138 / 0.3);
+}
+
+.bg-moss {
+  background-color: #e5f2f6;
+}
+
+.text-clay {
+  color: #d06a3f;
+}
+
+.bg-clay,
+.btn-danger {
+  background-color: #d06a3f;
+}
+
+.btn-danger:hover {
+  background-color: #b45632;
+}
+
+.border-sand {
+  border-color: #d4e0e8;
+}
+
+.border-sand\/80 {
+  border-color: rgb(212 224 232 / 0.8);
+}
+
+.bg-sand\/60,
+.hover\:bg-sand\/60:hover {
+  background-color: rgb(212 224 232 / 0.6);
+}
+
+.bg-card {
+  background-color: #f8fbfc;
+}
+
+.shadow-card {
+  box-shadow: 0 12px 30px rgba(21, 32, 51, 0.08);
+}
+
+.shop-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+}
+
+.product-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.75rem;
+  background: #e7f0d8;
+  aspect-ratio: 4 / 3;
+}
+
+.product-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (min-width: 768px) {
+  .product-frame {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 28rem;
+  }
+}
+
+.farm-login-card {
+  background-color: rgba(244, 240, 226, 0.94);
+  border: 1px solid rgba(226, 214, 176, 0.95);
+  box-shadow: 0 22px 55px rgba(20, 36, 12, 0.38);
+  backdrop-filter: blur(8px);
+}
+
+.farm-scene {
+  position: relative;
+  background-color: #132a1a;
+  background-image:
+    linear-gradient(135deg, rgba(17, 49, 34, 0.78), rgba(17, 49, 34, 0.55)),
+    url("https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1600&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.farm-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(233, 214, 153, 0.2), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(110, 163, 103, 0.18), transparent 32%);
+  pointer-events: none;
+}
+
+.farm-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: rgba(15, 25, 17, 0.24);
+  pointer-events: none;
+}
+
+.farm-scene>header {
+  position: relative;
+  z-index: 30;
+}
+
+.farm-scene>main {
+  position: relative;
+  z-index: 1;
+}
+
+.farm-scene main .text-ink\/50,
+.farm-scene main .text-ink\/60,
+.farm-scene main .text-ink\/70,
+.farm-scene main .text-ink\/80 {
+  color: rgba(244, 240, 226, 0.86);
+}
+
+.farm-scene .panel .text-ink\/50,
+.farm-scene .panel .text-ink\/60,
+.farm-scene .panel .text-ink\/70,
+.farm-scene .panel .text-ink\/80,
+.farm-scene .farm-login-card .text-ink\/50,
+.farm-scene .farm-login-card .text-ink\/60,
+.farm-scene .farm-login-card .text-ink\/70,
+.farm-scene .farm-login-card .text-ink\/80 {
+  color: rgb(61 74 52 / 0.9);
+}
+
+.farm-scene main {
+  color: #f4f0e2;
+}
+
+.farm-scene .panel,
+.farm-scene .farm-login-card {
+  color: #1c2a16;
+}
+
+.farm-scene .btn-primary {
+  background-color: #3d6a32;
+}
+
+.farm-scene .btn-primary:hover {
+  background-color: #2f5226;
+}

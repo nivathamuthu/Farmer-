@@ -1,0 +1,15 @@
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+backend/test.db
+backend/dev.db
+*.db
+backend/uploads/*
+!backend/uploads/.gitkeep
+node_modules/
+dist/
+.DS_Store
+*.log
