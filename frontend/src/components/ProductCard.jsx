@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { formatINR, imageSrc } from "../api/axios";
+import { useCart } from "../context/CartContext";
 import CategorySymbol from "./CategorySymbol";
 
 export default function ProductCard({ product }) {
-  const lowStock = product.stock_quantity > 0 && product.stock_quantity <= 5;
+  const { cart } = useCart();
+  const held = cart.items.find((item) => item.product_id === product.id)?.quantity || 0;
+  const left = Math.max(0, product.stock_quantity - held);
+  const lowStock = left > 0 && left <= 5;
   const [imageOk, setImageOk] = useState(Boolean(product.image_url));
 
   useEffect(() => {
@@ -39,7 +43,7 @@ export default function ProductCard({ product }) {
         <div className="mt-4 flex items-end justify-between border-t border-sand/80 pt-3">
           <p className="text-lg font-medium">{formatINR(product.price)}</p>
           <p className={`text-xs ${lowStock ? "text-clay" : "text-ink/60"}`}>
-            {product.stock_quantity === 0 ? "Out of stock" : lowStock ? `Only ${product.stock_quantity} left` : `${product.stock_quantity} in stock`}
+            {left === 0 ? "No stock" : lowStock ? `Only ${left} left` : `${left} in stock`}
           </p>
         </div>
       </div>

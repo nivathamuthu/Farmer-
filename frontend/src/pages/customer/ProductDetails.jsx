@@ -6,7 +6,7 @@ import { useCart } from "../../context/CartContext";
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const { refresh } = useCart();
+  const { cart, refresh } = useCart();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -50,7 +50,9 @@ export default function ProductDetails() {
   }
 
   function changeQuantity(next) {
-    const stock = product?.stock_quantity || 1;
+    const held = cart.items.find((item) => item.product_id === product?.id)?.quantity || 0;
+    const stock = Math.max(0, (product?.stock_quantity || 0) - held);
+    if (stock < 1) return;
     const value = Math.min(stock, Math.max(1, next));
     setQuantity(value);
   }
@@ -67,8 +69,10 @@ export default function ProductDetails() {
     );
   }
 
-  const outOfStock = product.stock_quantity < 1;
-  const atMax = Number(quantity) >= product.stock_quantity;
+  const held = cart.items.find((item) => item.product_id === product.id)?.quantity || 0;
+  const left = Math.max(0, product.stock_quantity - held);
+  const outOfStock = left < 1;
+  const atMax = Number(quantity) >= left;
 
   return (
     <section className="mx-auto max-w-6xl px-5 py-8 sm:px-8">
@@ -92,7 +96,7 @@ export default function ProductDetails() {
           <p className="mt-5 font-serif text-3xl">{formatINR(product.price)}</p>
           <p className="mt-4 max-w-prose leading-relaxed text-ink/80">{product.description}</p>
           <p className={`mt-4 text-sm ${outOfStock ? "text-clay" : "text-ink/60"}`}>
-            {outOfStock ? "Out of stock" : `${product.stock_quantity} available · cash on delivery`}
+            {outOfStock ? "No stock" : `${left} available · cash on delivery`}
           </p>
           <form onSubmit={addToCart} className="mt-6 space-y-4">
             <div>
@@ -111,7 +115,7 @@ export default function ProductDetails() {
                   id="qty"
                   type="number"
                   min="1"
-                  max={product.stock_quantity || 1}
+                  max={left || 1}
                   value={quantity}
                   disabled={outOfStock}
                   onChange={(event) => changeQuantity(Number(event.target.value))}

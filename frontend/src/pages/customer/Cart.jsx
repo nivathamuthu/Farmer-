@@ -51,7 +51,8 @@ export default function Cart() {
       ) : (
         <div className="mt-6 space-y-4">
           {cart.items.map((item) => {
-            const atStock = item.quantity >= item.stock_quantity;
+            const left = Math.max(0, item.stock_quantity - item.quantity);
+            const atStock = left === 0;
             return (
               <article key={item.product_id} className="panel flex flex-col gap-4 p-4 sm:flex-row sm:items-center">
                 <div className="h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-moss sm:h-28 sm:w-28">
@@ -62,7 +63,7 @@ export default function Cart() {
                   <p className="text-sm text-ink/70">
                     {item.farmer_name} · {formatINR(item.price)} each
                   </p>
-                  <p className="text-xs text-ink/60">{item.stock_quantity} in stock</p>
+                  <p className={`text-xs ${atStock ? "text-clay" : "text-ink/60"}`}>{atStock ? "No stock" : `${left} in stock`}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
