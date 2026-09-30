@@ -4,7 +4,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 
 from app.config import settings
-from app.database import SessionLocal, engine
+from app.database import Base, SessionLocal, engine
 from app.models import Admin, Product
 from app.security import hash_password
 
@@ -153,6 +153,7 @@ def wait_for_db() -> None:
 
 def seed() -> None:
     wait_for_db()
+    Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
         admin = db.query(Admin).filter(Admin.email == settings.ADMIN_EMAIL).first()

@@ -17,3 +17,20 @@ class Product(Base):
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class DeletedProduct(Base):
+    __tablename__ = "deleted_products"
+
+    id = Column(Integer, primary_key=True)
+    original_product_id = Column(Integer, nullable=False)
+    name = Column(String(150), nullable=False)
+    category = Column(String(80), nullable=False)
+    farmer_name = Column(String(120), nullable=False)
+    description = Column(Text)
+    price = Column(Numeric(10, 2), nullable=False)
+    stock_quantity = Column(Integer, nullable=False)
+    image_url = Column(Text)
+    is_active = Column(Boolean, nullable=False)
+    created_at = Column(DateTime)
+    deleted_at = Column(DateTime, server_default=func.now())

@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.deps import get_current_admin
-from app.models import Admin, CartItem, Product
+from app.models import Admin, CartItem, DeletedProduct, Product
 from app import uploads
 from app.schemas.product import (
     ProductCreate,
@@ -147,6 +147,20 @@ def delete_product(
     product = db.query(Product).filter(Product.id == product_id).first()
     if product is None:
         raise HTTPException(status_code=404, detail="Product not found")
+    db.add(
+        DeletedProduct(
+            original_product_id=product.id,
+            name=product.name,
+            category=product.category,
+            farmer_name=product.farmer_name,
+            description=product.description,
+            price=product.price,
+            stock_quantity=product.stock_quantity,
+            image_url=product.image_url,
+            is_active=product.is_active,
+            created_at=product.created_at,
+        )
+    )
     db.query(CartItem).filter(CartItem.product_id == product.id).delete(synchronize_session=False)
     db.delete(product)
     db.flush()

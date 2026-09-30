@@ -46,6 +46,21 @@ CREATE TABLE orders (
     created_at     TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE deleted_products (
+    id                  SERIAL PRIMARY KEY,
+    original_product_id INTEGER NOT NULL,
+    name                VARCHAR(150) NOT NULL,
+    category            VARCHAR(80)  NOT NULL,
+    farmer_name         VARCHAR(120) NOT NULL,
+    description         TEXT,
+    price               NUMERIC(10,2) NOT NULL,
+    stock_quantity      INTEGER NOT NULL,
+    image_url           TEXT,
+    is_active           BOOLEAN NOT NULL,
+    created_at          TIMESTAMP,
+    deleted_at          TIMESTAMP DEFAULT NOW()
+);
+
 CREATE TABLE order_items (
     id           SERIAL PRIMARY KEY,
     order_id     INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,

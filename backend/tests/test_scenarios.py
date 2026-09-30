@@ -270,6 +270,26 @@ def test_checkout_one_cart_item_leaves_the_rest(client: TestClient, admin_token:
     assert cart.json()["grand_total"] == 60
 
 
+def test_deleting_a_product_copies_it_into_deleted_products(client: TestClient, admin_token: str):
+    from app.database import get_db
+    from app.models import DeletedProduct
+
+    product = create_product(client, admin_token, name="Archive Tomato", price=42, stock_quantity=7)
+    deleted = client.delete(f"/api/admin/products/{product['id']}", headers=auth_header(admin_token))
+    assert deleted.status_code == 204
+    assert client.get(f"/api/products/{product['id']}").status_code == 404
+
+    session_gen = client.app.dependency_overrides[get_db]()
+    session = next(session_gen)
+    try:
+        saved = session.query(DeletedProduct).filter(DeletedProduct.original_product_id == product["id"]).one()
+        assert saved.name == "Archive Tomato"
+        assert float(saved.price) == 42
+        assert saved.stock_quantity == 7
+    finally:
+        session_gen.close()
+
+
 def test_admin_can_mark_an_order_on_progress_or_delivered(client: TestClient, admin_token: str):
     product = create_product(client, admin_token, stock_quantity=4, price=10)
     headers = session_header("status-buyer")
