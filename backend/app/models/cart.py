@@ -10,17 +10,33 @@ class Cart(Base):
     id = Column(Integer, primary_key=True)
     session_id = Column(String(64), unique=True, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    status = Column(String(20), default="active", nullable=False)
 
-    items = relationship("CartItem", back_populates="cart", cascade="all, delete-orphan")
+    items = relationship(
+        "CartItem",
+        back_populates="cart",
+        cascade="all, delete-orphan"
+    )
 
 
 class CartItem(Base):
     __tablename__ = "cart_items"
-    __table_args__ = (UniqueConstraint("cart_id", "product_id"),)
+    __table_args__ = (
+        UniqueConstraint("cart_id", "product_id"),
+    )
 
     id = Column(Integer, primary_key=True)
-    cart_id = Column(Integer, ForeignKey("carts.id", ondelete="CASCADE"), nullable=False)
-    product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    cart_id = Column(
+        Integer,
+        ForeignKey("carts.id", ondelete="CASCADE"),
+        nullable=False
+    )
+    product_id = Column(
+        Integer,
+        ForeignKey("products.id", ondelete="CASCADE"),
+        nullable=False
+    )
     quantity = Column(Integer, nullable=False)
 
     cart = relationship("Cart", back_populates="items")

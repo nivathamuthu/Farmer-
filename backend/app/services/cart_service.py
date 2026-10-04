@@ -126,10 +126,12 @@ def add_item(
             cart_id=cart.id,
             product_id=product.id,
             quantity=new_quantity,
+            product_name=product.name,
         )
         db.add(item)
     else:
         item.quantity = new_quantity
+        item.product_name = product.name
 
     db.flush()
 
@@ -162,6 +164,7 @@ def update_item(
         .filter(
             CartItem.cart_id == cart.id,
             CartItem.product_id == product.id,
+            
         )
         .first()
     )
